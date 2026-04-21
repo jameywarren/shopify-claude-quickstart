@@ -15,7 +15,7 @@ skills and CLI capabilities that connect you directly to the Shopify platform.
 - This is a **store operations** project — operating an existing Shopify store.
 - **Validate every GraphQL operation** with `shopify-plugin:shopify-admin` *before* executing it with `shopify-plugin:shopify-admin-execution`.
 - **Mutations require `--allow-mutations`** on `shopify store execute`. Without that flag, only queries run. This is the primary safety guardrail — respect it.
-- **Prefer built-in theme sections** (Dawn, Horizon, OS 2.0) over custom Liquid whenever a native section can do the job.
+- **Prefer the active theme's own sections and blocks** over custom Liquid whenever an existing primitive can do the job. Check `store-data/theme/sections/` (and `store-data/theme/blocks/` for block-based themes) first — regardless of whether the theme is Dawn, Horizon, Craft, Impulse, Impact, or any other OS 2.0 theme.
 - **Use the toolkit, don't reinvent it.** The skills are already installed.
 
 ### Out of scope — do NOT do these here
@@ -165,10 +165,13 @@ Always push to a **development theme first**, never directly to the live theme.
 
 ### Theme section preference order
 
-1. **Native theme sections** — always check if a built-in section can do the job
-2. **Existing custom sections already in the theme** — check pulled theme first
-3. **Modified native sections** — extend via `settings_schema` before writing new code
-4. **New custom sections** — only when native sections genuinely cannot achieve the goal
+Always work from the **active theme's own primitives** — the sections and blocks that shipped with the theme the client is actually running, whether that's Dawn, Horizon, Craft, Impulse, Impact, Symmetry, or anything else.
+
+1. **Existing sections in the pulled theme** — check `store-data/theme/sections/` first. Use what's there.
+2. **Existing blocks in the pulled theme** — for block-based OS 2.0 themes, check `store-data/theme/blocks/` and compose sections via blocks before writing new section code.
+3. **Extend existing sections** — add settings via `settings_schema` on an existing section before creating a new file.
+4. **Modified copies of existing sections** — when the original must stay untouched, duplicate and modify.
+5. **New custom sections** — only when nothing in the theme can achieve the goal. State this explicitly when recommending a new section.
 
 ### When suggesting layouts
 

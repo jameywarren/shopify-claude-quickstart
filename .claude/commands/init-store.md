@@ -19,14 +19,22 @@ shopify store auth --store {STORE}.myshopify.com --scopes \
 read_products,write_products,\
 read_content,write_content,\
 read_metaobjects,write_metaobjects,\
-read_metafield_definitions,write_metafield_definitions,\
+read_metaobject_definitions,write_metaobject_definitions,\
 read_files,write_files,\
 read_script_tags,write_script_tags,\
 read_price_rules,write_price_rules,\
 read_inventory,write_inventory,\
 read_customers,read_orders,\
-read_navigation,write_navigation
+read_apps,read_locations
 ```
+
+> **Scope notes (verified 2026-04):**
+> - `read_metafield_definitions` / `write_metafield_definitions` — **NOT valid scopes.** Metafield access is gated by the owning resource (e.g. `read_products` covers product metafields).
+> - `read_metafields` / `write_metafields` — **NOT valid scopes.** Same story.
+> - `read_navigation` / `write_navigation` — **NOT valid scopes.** Navigation menus are covered by `read_content` / `write_content`.
+> - `read_apps` is required for the `appInstallations` query (used by `/app-conflict-check`).
+> - `read_locations` is required for any `locations` query.
+> - OAuth will reject the entire scope list if any single scope is invalid, one error at a time, so adding an invalid scope blocks all auth.
 
 Then update `store-data/scopes-granted.md` — record store handle, today's date, and mark each scope Granted: Y.
 
@@ -44,13 +52,31 @@ Use `shopify-plugin:shopify-admin` to validate, then `shopify-plugin:shopify-adm
 
 - Active theme name, ID (`gid://shopify/OnlineStoreTheme/...`), version, base
 - All installed apps (and what they inject)
-- Existing metafield definitions (namespace, key, type, owner)
 - Existing metaobject definitions
 - Navigation menus (main + footer) — IDs and item types
 - Collection structure and count
 - Product count and variant complexity
 - Script tags and third-party pixels
 - Markets, currencies, languages, plan tier
+
+**Starter query (verified 2026-04 — validate with `shopify-plugin:shopify-admin` before running):**
+
+```graphql
+query {
+  shop { name primaryDomain { url host } myshopifyDomain currencyCode plan { displayName } }
+  themes(first: 50) { nodes { id name role processing } }
+  productsCount { count precision }
+  collectionsCount { count }
+  appInstallations(first: 100) { nodes { id app { title } } }
+  metaobjectDefinitions(first: 50) { nodes { id name type } }
+  scriptTags(first: 50) { nodes { id src displayScope } }
+  locations(first: 20) { nodes { id name } }
+}
+```
+
+> **Schema notes (Admin API 2025-10+):** `productsCount` and `collectionsCount` are **top-level Query fields**, not fields on `Shop`. `OnlineStoreTheme` has no `previewable` field. `appInstallations` requires `read_apps`; `locations.name` requires `read_locations`. Validate any deviation with the `shopify-plugin:shopify-admin` skill before executing.
+
+Metafield definitions are not a top-level query — they live on resource types (`Product.metafieldDefinitions`, `Collection.metafieldDefinitions`, etc.). Query them per owner type only if the build needs them.
 
 Write findings to `store-data/store-profile.md`, overwriting the template.
 
