@@ -1,0 +1,27 @@
+# Downloaded theme files (large, regenerated via shopify theme pull)
+store-data/theme/
+
+# Shopify CLI auth tokens
+.shopify/
+*.shopify
+
+# Environment / secrets
+.env
+.env.local
+.env.*
+
+# Claude Code local settings (user-specific)
+.claude/settings.local.json
+.claude/worktrees/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Node (if any scripts added)
+node_modules/
+npm-debug.log*
