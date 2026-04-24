@@ -1,6 +1,14 @@
 # Downloaded theme files (large, regenerated via shopify theme pull)
 store-data/theme/
 
+# Store data snapshots (regenerated via /pull-store-data)
+store-data/pages.json
+store-data/navigation.json
+store-data/blogs.json
+store-data/collections.json
+store-data/products-index.csv
+store-data/metafield-definitions.json
+
 # Shopify CLI auth tokens
 .shopify/
 *.shopify
