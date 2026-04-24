@@ -7,7 +7,22 @@
         "hooks": [
           {
             "type": "command",
-            "command": "printf 'shopify-claude-quickstart loaded.\\n\\nFirst time on this store?\\n  /init-store STORE.myshopify.com   - auth, theme pull, audit, fill CLAUDE.md\\n  /brief-interview                  - fill in client-brief/ conversationally\\n  /brief-quick                      - single-file lightweight brief\\n\\nReturning?\\n  /recover-context                  - re-anchor on where we left off\\n\\nBuilding?\\n  /homepage-from-brief  /pdp-audit  /metafield-schema  /nav-build  /seo-audit  /alt-text  ...\\n  Type /  to see all commands.\\n\\nReminders:\\n  - Validate GraphQL with shopify-plugin:shopify-admin BEFORE executing\\n  - Mutations require --allow-mutations on shopify store execute\\n  - Push to a DEV theme first, never live\\n'"
+            "command": "printf 'shopify-claude-quickstart loaded.\\n\\nFirst time on this store?\\n  /init-store STORE.myshopify.com   - auth, theme pull, audit, fill CLAUDE.md\\n  /brief-interview                  - fill in client-brief/ conversationally\\n  /brief-quick                      - single-file lightweight brief\\n\\nReturning?\\n  /recover-context                  - re-anchor on where we left off\\n\\nBuilding?\\n  /brand-system  /design-intake  /implement-mockup-module\\n  /homepage-from-brief  /pdp-audit  /metafield-schema  /nav-build  /seo-audit  /alt-text  ...\\n  Type /  to see all commands.\\n\\nReminders:\\n  - Validate GraphQL with shopify-plugin:shopify-admin BEFORE executing\\n  - Mutations require --allow-mutations on shopify store execute\\n  - Push to a DEV theme first, never live\\n  - Run /log-session before closing\\n'"
+          },
+          {
+            "type": "command",
+            "command": "mkdir -p docs && echo \"SESSION START: $(date '+%Y-%m-%d %H:%M:%S')\" >> docs/session-activity.log"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "mkdir -p docs && echo \"  $(date '+%H:%M:%S') turn\" >> docs/session-activity.log"
           }
         ]
       }
