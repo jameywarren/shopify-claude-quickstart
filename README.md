@@ -23,22 +23,56 @@ End result: from `git clone` to "Claude Code knows your client and your store" i
 
 ---
 
-## 30-second tour
+## Getting started — two paths
+
+### Path A: Agency / multiple clients (recommended)
+
+Use `setup.sh` to scaffold an isolated folder per client. Each client gets its own git
+repo with no connection to the template — clean, private, and independent.
 
 ```bash
 # Clone the template (once)
 git clone https://github.com/jameywarren/shopify-claude-quickstart.git
 cd shopify-claude-quickstart
 
-# Create a new client folder (sibling to the template)
+# Create a new client folder at clients/acme-coffee/
 ./setup.sh acme-coffee
-# (prompts for store handle, runs git init, drops you ready)
+# (prompts for store handle, runs git init, prints next steps)
 
-cd ../acme-coffee
+cd clients/acme-coffee
 claude
 ```
 
-In Claude Code:
+To keep the template current, open a session in `shopify-claude-quickstart/` and run
+`/toolkit-update`. Client folders are independent snapshots — they don't auto-update,
+but they also never get surprise merge conflicts.
+
+### Path B: Single project / want automatic updates
+
+Clone the template directly as your project folder, then remap the remotes so client
+work goes to a private repo and template updates come from `upstream`:
+
+```bash
+git clone https://github.com/jameywarren/shopify-claude-quickstart sonic-temple
+cd sonic-temple
+git remote rename origin upstream            # template updates come from here
+gh repo create --private sonic-temple --push # client work goes to private repo
+claude
+```
+
+To pull template improvements later:
+
+```bash
+git fetch upstream
+git merge upstream/main
+```
+
+`/toolkit-update` in this setup runs `git fetch upstream && git merge upstream/main`.
+Merge conflicts can happen if you've customized `CLAUDE.md` — resolve them manually.
+
+---
+
+## In Claude Code (both paths)
 
 ```
 /init-store acme-coffee.myshopify.com    Authenticates, pulls theme, audits store
@@ -57,29 +91,38 @@ That's the whole loop.
 ```
 shopify-claude-quickstart/
 ├── CLAUDE.md                   ← Loaded by Claude Code every session
+├── VERSION                     ← Template version (copied to .toolkit-version in each client scaffold)
 ├── setup.sh                    ← Per-client scaffold script
 ├── .claude/
-│   ├── settings.json           ← SessionStart hook prints the orientation
-│   └── commands/               ← Slash commands (the prompt library)
-│       ├── init-store.md
-│       ├── brief-interview.md
-│       ├── brief-quick.md
-│       ├── brand-system.md
-│       ├── design-intake.md
-│       ├── implement-mockup-module.md
-│       ├── audit-store.md
-│       ├── homepage-from-brief.md
-│       ├── pdp-audit.md
-│       ├── metafield-schema.md
-│       ├── nav-build.md
-│       ├── seo-audit.md
-│       ├── safe-push.md
-│       ├── log-session.md
+│   ├── settings.json           ← SessionStart hook + update check
+│   └── commands/               ← 35+ slash commands
+│       ├── init-store.md           First-session setup
+│       ├── brief-interview.md      Conversational brief capture (full)
+│       ├── brief-quick.md          8-question lightweight brief
+│       ├── brand-system.md         Visual identity capture
+│       ├── design-intake.md        Mockup → implementation spec
+│       ├── implement-mockup-module.md  Build one module at a time
+│       ├── audit-store.md          Full store audit
+│       ├── homepage-from-brief.md  Layout proposal from brief + theme
+│       ├── pdp-audit.md            Product page audit
+│       ├── metafield-schema.md     Design + generate metafield mutations
+│       ├── nav-build.md            Build navigation menus
+│       ├── seo-audit.md            Meta titles + descriptions
+│       ├── launch-checklist.md     Pre-launch verification (payments, domain, analytics...)
+│       ├── redirect-build.md       Build URL redirects from the brief
+│       ├── discount-setup.md       Set up discount codes or automatic discounts
+│       ├── image-upload.md         Upload images to Shopify Files
+│       ├── create-pages.md         Generate pre-launch stub pages (FAQ, Privacy, etc.)
+│       ├── safe-push.md            Pre-flight before going live
+│       ├── log-session.md          Append session log entry
+│       ├── recover-context.md      Re-anchor after context confusion
+│       ├── toolkit-update.md       Pull latest template changes
 │       └── ...
-├── client-brief/               ← Empty templates (full brief)
-├── client-brief-EXAMPLE/       ← Completed example brief (Lupine Field Coffee)
+├── client-brief/               ← Empty templates (fill via /brief-interview)
+├── client-brief-EXAMPLE/       ← Completed example brief (Lupine Field Coffee) — removed by default,
+│                                  keep with ./setup.sh <name> --include-example
 ├── client-brief-QUICK.md       ← Single-file lightweight brief (alt path)
-├── design/                     ← Visual design inputs (required reading for any UI work)
+├── design/
 │   ├── README.md
 │   ├── brand-system.md         ← Palette, fonts, voice (generated by /brand-system)
 │   ├── mockups/                ← PNGs, screenshots, design artifacts
@@ -116,7 +159,6 @@ After install you should see these skills available:
 - `shopify-plugin:shopify-admin-execution` — `shopify store auth` + `shopify store execute` workflow
 - `shopify-plugin:shopify-liquid` — Liquid template authoring + validation
 - `shopify-plugin:shopify-dev` — general Shopify developer docs
-- (Optional) `shopify-plugin:shopify-functions`, `shopify-plugin:shopify-hydrogen`, `shopify-plugin:shopify-polaris-*`
 
 > If the marketplace ID for the plugin changes, check Shopify's official docs for the
 > current install command. The CLAUDE.md in this template still works as long as the
@@ -124,31 +166,35 @@ After install you should see these skills available:
 
 ---
 
-## Per-client setup with `setup.sh`
+## `setup.sh` options
 
 ```bash
-# Default: full 5-file client brief
+# Default: full 5-file client brief, creates clients/<name>/
 ./setup.sh acme-coffee
 
 # Lightweight: single-file quick brief (for small jobs)
 ./setup.sh acme-tweak --quick
 
+# Keep client-brief-EXAMPLE/ as a reference (removed by default)
+./setup.sh acme-coffee --include-example
+
 # Seed brief from an existing client (overlap is common)
-./setup.sh new-coffee-co --from ../acme-coffee
+./setup.sh new-coffee-co --from ../clients/acme-coffee
 ```
 
 The script:
-1. Copies the template to a sibling folder named for the client
-2. Removes `setup.sh` and the unused brief variant
-3. Prompts for the store handle and prefills CLAUDE.md
-4. Runs `git init` and creates an initial commit
-5. Tells you exactly what to type in Claude Code
+1. Creates `clients/<name>/` from the template
+2. Records the template version in `.toolkit-version`
+3. Removes `setup.sh`, unused brief variants, and (by default) `client-brief-EXAMPLE/`
+4. Prompts for the store handle and prefills CLAUDE.md
+5. Runs `git init` and creates an initial commit
+6. Prints the git remote setup command for a private repo
 
 ---
 
 ## How a typical first session looks
 
-After running `setup.sh acme-coffee` and opening Claude Code in that folder:
+After running `setup.sh acme-coffee` and opening Claude Code in `clients/acme-coffee/`:
 
 ```
 (SessionStart hook prints the orientation)
@@ -222,6 +268,8 @@ prompt library lives in `.claude/commands/` — improving it is a single file ed
 
 - **Use a development theme** for all changes: `shopify theme push --theme DEV_THEME_ID --store CLIENT.myshopify.com`. Never push directly to live until ready.
 - **Run `/log-session`** at the end of every working session. Two minutes saves you twenty next time.
+- **Shell quoting:** `shopify store execute --query '...'` breaks on apostrophes in copy values. Use `--variables "$(cat /tmp/vars.json)"` with a Python-generated JSON file for any mutation that writes product descriptions, metafields, or other text content.
+- **Validate before executing.** Mutation names change between API versions without warning. Always run `shopify-plugin:shopify-admin` validation before building a mutation — never write mutation names from memory.
 - **Capture friction in `docs/improvements.md`** when something doesn't work the way you expected. That file is the backlog for improving this template.
 - **Commit your brief, not your theme.** `store-data/theme/` is gitignored; it's regenerated via `shopify theme pull`.
 
@@ -244,7 +292,7 @@ MIT — see [LICENSE](./LICENSE). Use it, fork it, build your business on it.
 ## Who made this
 
 Built by [Jamey Warren](https://kahak.ai) of [kahakai](https://kahak.ai) — a managed
-Shopify service based in Bozeman, Montana. kahakai takes over store operations for
+Shopify service based in Livingston, Montana. kahakai takes over store operations for
 merchants who'd rather run their business than run their backend. This template is
 the infrastructure we use to do it.
 
