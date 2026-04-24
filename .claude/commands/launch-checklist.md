@@ -94,4 +94,8 @@ Output a checklist table:
 
 Mark each **PASS**, **FAIL**, or **NEEDS REVIEW**. List blockers clearly at the top.
 
-If everything passes: output "Store is ready to launch" and the exact `shopify theme push` command to push the live theme if it hasn't already been published.
+If everything passes: output "Store is ready to launch" and the exact push command:
+
+```bash
+shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID
+```

@@ -175,7 +175,16 @@ shopify store execute --store {STORE_HANDLE}.myshopify.com --allow-mutations \
 ### Theme push (alternative: bulk push from local pulled theme)
 
 ```bash
-shopify theme push --store {STORE_HANDLE}.myshopify.com --theme DEV_THEME_ID
+shopify theme push --path store-data/theme --store {STORE_HANDLE}.myshopify.com --theme DEV_THEME_ID
+```
+
+The `--path` flag is required — `shopify theme push` must know where the local theme files are.
+Without it you'll get: *"It doesn't seem like you're running this command in a theme directory."*
+
+To push only specific files:
+```bash
+shopify theme push --path store-data/theme --store {STORE_HANDLE}.myshopify.com --theme DEV_THEME_ID \
+  --only sections/hero.liquid templates/index.json
 ```
 
 Always push to a **development theme first**, never directly to the live theme.

@@ -11,4 +11,18 @@ Before pushing any theme changes to the live theme, run through:
 5. Missing schema translations for any new settings?
 6. Any in-flight metafield/metaobject changes that haven't been applied yet?
 
-Report all issues. If all clear, confirm "ready to push" and remind me of the exact `shopify theme push` command for the live theme. Do not push yourself — I push.
+Report all issues. If all clear, confirm "ready to push" and output the exact push command for the live theme:
+
+```bash
+shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID
+```
+
+To push only changed files (faster, safer):
+```bash
+shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID \
+  --only sections/changed.liquid templates/changed.json
+```
+
+The `--path store-data/theme` flag is required — omitting it causes "not in a theme directory" errors.
+
+Do not push yourself — I push.
