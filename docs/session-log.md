@@ -13,22 +13,32 @@
 ### What We Did
 -
 
-### Files Changed
-- store-data/theme/sections/xxx.liquid — [what changed]
-- client-brief/xxx.md — [what changed]
+### Theme State
+- Dev theme ID used: gid://shopify/OnlineStoreTheme/___
+- Backup theme created: (gid://... or none)
+- Pushed to live theme: Y / N
 
 ### Decisions Made
--
+- [Decision] — **Why:** [rationale]
 
 ### Open Questions
 -
 
-### Next Session: Start Here
--
+### Blocked On
+- (waiting on client assets / collaborator access / app approval / etc. — or "nothing")
+
+### Next Session
+- **Start here:** [the single first action next session should take]
 ```
 
 ---
 
-## Sessions
+## Current Sprint
 
-<!-- Add newest sessions at the top -->
+<!-- Most recent 2–3 sessions. Move older entries to Archive when this gets long. -->
+
+---
+
+## Archive
+
+<!-- Older sessions -->

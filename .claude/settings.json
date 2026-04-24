@@ -12,6 +12,10 @@
           {
             "type": "command",
             "command": "mkdir -p docs && echo \"SESSION START: $(date '+%Y-%m-%d %H:%M:%S')\" >> docs/session-activity.log"
+          },
+          {
+            "type": "command",
+            "command": "REMOTE=$(git remote get-url origin 2>/dev/null || echo ''); if echo \"$REMOTE\" | grep -q 'shopify-claude-quickstart'; then git fetch origin main --quiet 2>/dev/null; BEHIND=$(git rev-list HEAD..origin/main --count 2>/dev/null || echo 0); [ \"$BEHIND\" -gt '0' ] && printf '\\n⬆  shopify-claude-quickstart has %s new commit(s) on GitHub. Run /toolkit-update to pull the latest.\\n' \"$BEHIND\" || true; fi"
           }
         ]
       }

@@ -39,6 +39,19 @@
 ## Accessibility Notes
 <!-- Color contrast requirements, font size minimums, etc. -->
 
+## Existing Assets
+<!-- What the client has now vs. what still needs to be made or sourced -->
+
+| Asset | Status | Notes |
+|---|---|---|
+| SVG wordmark / logo | have / need / in progress | |
+| Logo variations (light bg, dark bg, favicon) | have / need / in progress | |
+| Brand font files | have / using Google Fonts / need license | |
+| Product photography | have / partial / none | |
+| Lifestyle / campaign imagery | have / partial / none | |
+| Brand video / loops | have / partial / none | |
+| Icons / illustrations | have / need / not needed | |
+
 ---
 
 > See `client-brief-EXAMPLE/design-brief.md` for a fully filled-in reference.

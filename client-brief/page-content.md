@@ -73,6 +73,19 @@
 
 ---
 
+## Shipping & Returns
+
+**Shipping policy headline:**
+**Standard shipping:** (rate, carrier, estimated transit)
+**Free shipping threshold:** (e.g. free over $75, or n/a)
+**International shipping:** (Y/N — destinations and rates if yes)
+**Returns window:** (e.g. 30 days)
+**Return conditions:** (unopened only / any reason / final sale items)
+**Exchanges:** (Y/N)
+**Policy copy:** (paste full text, or note if using Shopify's default template)
+
+---
+
 ## Product Description Framework
 <!-- Rules for how product descriptions should be structured across the catalog -->
 

@@ -22,8 +22,8 @@ Mark each as Granted (Y/N) after the auth flow completes.
 | write_content | | |
 | read_metaobjects | | |
 | write_metaobjects | | |
-| read_metafield_definitions | | |
-| write_metafield_definitions | | |
+| read_metaobject_definitions | | |
+| write_metaobject_definitions | | |
 | read_files | | |
 | write_files | | |
 | read_script_tags | | |
@@ -34,8 +34,7 @@ Mark each as Granted (Y/N) after the auth flow completes.
 | write_inventory | | |
 | read_customers | | |
 | read_orders | | |
-| read_navigation | | |
-| write_navigation | | |
+| read_locations | | |
 
 ## Notes
 <!-- Any scope limitations, store plan restrictions, or auth issues to remember.

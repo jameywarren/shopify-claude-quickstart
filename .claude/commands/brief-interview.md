@@ -24,7 +24,9 @@ You are running the **client brief interview**. Your job is to fill in every fil
 4. Who is the ideal buyer? (one paragraph, not a persona)
 5. What's the #1 conversion action that matters? Subscription, purchase, email signup?
 6. Who are 2–3 competitors, and what makes you different?
-7. Any constraints I should know? Budget, timeline, must-have apps, things you refuse to do?
+7. What's the target launch date? Is it a hard deadline or a soft target?
+8. Is this a brand new store or migrating from another platform? If migrating: what platform, and are there existing orders, customers, or subscriptions to preserve?
+9. Any constraints I should know? Budget, must-have apps, things you refuse to do?
 
 **Block 2 — voice-style-guide.md (do this before design — voice constrains design)**
 8. Describe your brand's voice in 3–5 adjectives.
@@ -37,7 +39,7 @@ You are running the **client brief interview**. Your job is to fill in every fil
 13. Three things you want to *avoid* visually.
 14. Primary brand colors? Typography preferences?
 15. What's the homepage hero supposed to *do* — what's the one message?
-16. Any photography or media you already have? Or do we need to plan for that?
+16. What assets do you have right now? Logo files (SVG?), photography library, brand fonts, video? What still needs to be made?
 
 **Block 4 — navigation.md**
 17. What are the 4–6 items in your main nav?

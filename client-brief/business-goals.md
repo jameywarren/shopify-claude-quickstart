@@ -41,6 +41,27 @@
 ## Known Constraints
 <!-- Budget, timeline, technical limitations, must-have apps, etc. -->
 
+## Launch Date
+**Target launch date:**
+**Hard deadline?** (Y/N)
+**Launch dependencies:** (domain transfer / photography / app approval / etc.)
+
+## New Store or Migration?
+**Type:** (New store / Migration from existing platform)
+**If migration:**
+- Platform migrating from:
+- Existing orders/customers to preserve: (Y/N)
+- Active subscriptions to migrate: (Y/N)
+- URL structure to preserve for SEO: (Y/N — list key URLs in navigation.md)
+
+## Analytics & Tracking
+<!-- Gather these before build starts — painful to chase down at launch -->
+**GA4 property ID:**
+**Meta Pixel ID:**
+**TikTok Pixel ID:**
+**Other pixels/scripts:**
+**Klaviyo account connected:** (Y/N — list account ID if yes)
+
 ---
 
 > See `client-brief-EXAMPLE/business-goals.md` for a fully filled-in reference.

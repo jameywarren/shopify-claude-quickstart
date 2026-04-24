@@ -4,12 +4,14 @@
 #   ./setup.sh <client-name>
 #   ./setup.sh <client-name> --quick                  # use single-file quick brief
 #   ./setup.sh <client-name> --from <existing-dir>    # seed brief from another client
+#   ./setup.sh <client-name> --include-example        # keep client-brief-EXAMPLE/ as reference
 
 set -euo pipefail
 
 CLIENT_NAME="${1:-}"
 MODE="full"
 SEED_FROM=""
+INCLUDE_EXAMPLE="false"
 
 if [[ -z "$CLIENT_NAME" ]]; then
   cat <<EOF
@@ -17,8 +19,10 @@ Usage:
   ./setup.sh <client-name>
   ./setup.sh <client-name> --quick
   ./setup.sh <client-name> --from <path-to-existing-client>
+  ./setup.sh <client-name> --include-example
 
-Creates a sibling directory with the template, ready to start a Claude Code session.
+Creates clients/<client-name>/ ready to start a Claude Code session.
+By default, client-brief-EXAMPLE/ is removed. Pass --include-example to keep it as a reference.
 EOF
   exit 1
 fi
@@ -38,6 +42,10 @@ while [[ $# -gt 0 ]]; do
       fi
       shift 2
       ;;
+    --include-example)
+      INCLUDE_EXAMPLE="true"
+      shift
+      ;;
     *)
       echo "Unknown option: $1" >&2
       exit 1
@@ -47,7 +55,9 @@ done
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PARENT_DIR="$(dirname "$SCRIPT_DIR")"
-TARGET="$PARENT_DIR/$CLIENT_NAME"
+TARGET="$PARENT_DIR/clients/$CLIENT_NAME"
+
+mkdir -p "$PARENT_DIR/clients"
 
 if [[ -e "$TARGET" ]]; then
   echo "Error: $TARGET already exists." >&2
@@ -56,6 +66,7 @@ fi
 
 echo "Creating $TARGET..."
 cp -R "$SCRIPT_DIR" "$TARGET"
+cp "$SCRIPT_DIR/VERSION" "$TARGET/.toolkit-version" 2>/dev/null || true
 cd "$TARGET"
 
 # Strip template-only files
@@ -63,10 +74,14 @@ rm -f setup.sh
 rm -rf .git
 
 if [[ "$MODE" == "quick" ]]; then
-  rm -rf client-brief client-brief-EXAMPLE
+  rm -rf client-brief
   echo "Quick mode: kept client-brief-QUICK.md only."
 else
   rm -f client-brief-QUICK.md
+fi
+
+if [[ "$INCLUDE_EXAMPLE" != "true" ]]; then
+  rm -rf client-brief-EXAMPLE
 fi
 
 if [[ -n "$SEED_FROM" ]]; then
@@ -111,3 +126,7 @@ if [[ "$MODE" == "quick" ]]; then
 else
   echo "  /brief-interview"
 fi
+echo ""
+echo "Optional — push to a private GitHub repo:"
+echo "  gh repo create --private $CLIENT_NAME --source=. --push"
+echo "  (or) git remote add origin <url> && git push -u origin main"

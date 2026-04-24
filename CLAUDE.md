@@ -10,6 +10,8 @@
 You are working with the **Shopify Dev plugin** (often called the "Shopify AI Toolkit") —
 skills and CLI capabilities that connect you directly to the Shopify platform.
 
+> **Prerequisite:** The `shopify-plugin:shopify-*` skills must be installed and enabled. Nearly every command in this toolkit depends on them. If they aren't available, install the Shopify Dev plugin from the Claude Code plugin marketplace before proceeding.
+
 ### Core rules
 
 - This is a **store operations** project — operating an existing Shopify store.
@@ -17,6 +19,8 @@ skills and CLI capabilities that connect you directly to the Shopify platform.
 - **Mutations require `--allow-mutations`** on `shopify store execute`. Without that flag, only queries run. This is the primary safety guardrail — respect it.
 - **Prefer the active theme's own sections and blocks** over custom Liquid whenever an existing primitive can do the job. Check `store-data/theme/sections/` (and `store-data/theme/blocks/` for block-based themes) first — regardless of whether the theme is Dawn, Horizon, Craft, Impulse, Impact, or any other OS 2.0 theme.
 - **Use the toolkit, don't reinvent it.** The skills are already installed.
+- **At session start, read `docs/session-log.md`** (last entry) before proposing anything. Open questions and the "Next Session" action from the previous session take priority over fresh suggestions.
+- **Before any theme edit, read the THEME NOTES section** at the bottom of this file. It records quirks discovered in previous sessions — re-discovering them wastes time.
 
 ### Out of scope — do NOT do these here
 
@@ -225,6 +229,16 @@ If `design/` is empty or missing, flag that visual design direction hasn't been 
 - **`--allow-mutations` is opt-in** — never add it as a default flag. Type it deliberately.
 - **No bulk destructive operations** without explicit confirmation in the conversation.
 - **Log every store-data change** in `docs/session-log.md` (or run `/log-session`).
+
+---
+
+## CURRENT BUILD PHASE
+
+> Update this as the project advances. One-line each.
+
+**Phase:** (Setup / Brief / Design / Build / Launch)
+**Active work:**
+**Last session:**
 
 ---
 
