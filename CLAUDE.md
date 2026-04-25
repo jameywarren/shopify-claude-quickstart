@@ -177,7 +177,11 @@ shopify store execute --store {STORE_HANDLE}.myshopify.com --allow-mutations \
 ### Theme push (alternative: bulk push from local pulled theme)
 
 ```bash
+# Dev theme (no confirmation prompt)
 shopify theme push --path store-data/theme --store {STORE_HANDLE}.myshopify.com --theme DEV_THEME_ID
+
+# Live theme — requires --force because Claude Code runs non-interactively
+shopify theme push --path store-data/theme --store {STORE_HANDLE}.myshopify.com --theme LIVE_THEME_ID --force
 ```
 
 The `--path` flag is required — `shopify theme push` must know where the local theme files are.
@@ -185,9 +189,11 @@ Without it you'll get: *"It doesn't seem like you're running this command in a t
 
 To push only specific files:
 ```bash
-shopify theme push --path store-data/theme --store {STORE_HANDLE}.myshopify.com --theme DEV_THEME_ID \
+shopify theme push --path store-data/theme --store {STORE_HANDLE}.myshopify.com --theme LIVE_THEME_ID --force \
   --only sections/hero.liquid templates/index.json
 ```
+
+> **Why `--force` on live pushes:** Claude Code runs commands non-interactively. When pushing to the published theme, the Shopify CLI prompts "Push theme files to the live theme?" — and exits with code 1 because there's no TTY to answer it. `--force` bypasses the prompt. Always required for live theme pushes; never needed for dev theme pushes.
 
 Always push to a **development theme first**, never directly to the live theme.
 

@@ -19,19 +19,21 @@ Push in two steps. Shopify validates template JSON before resolving new section 
 
 ```bash
 # Step 1: section Liquid first
-shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID \
+shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID --force \
   --only sections/changed.liquid
 
 # Step 2: template JSON after
-shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID \
+shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID --force \
   --only templates/changed.json
 ```
 
 For unrelated files (no section/template dependency), a single push is fine:
 ```bash
-shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID \
+shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID --force \
   --only sections/a.liquid sections/b.liquid
 ```
+
+> **`--force` is required for live theme pushes.** Claude Code runs non-interactively — the Shopify CLI prompt "Push theme files to the live theme?" has no TTY to answer and exits with code 1. `--force` bypasses it. Dev theme pushes don't need it.
 
 The `--path store-data/theme` flag is required — omitting it causes "not in a theme directory" errors.
 
