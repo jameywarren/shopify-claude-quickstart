@@ -91,6 +91,7 @@ This project ships with slash commands in `.claude/commands/`. **Use them instea
 | `/blog-plan [duration]` | Generate a content plan |
 | `/catalog-triage [count]` | Triage a large catalog before cleanup |
 | `/batch-categorize <src> <cats>` | Bulk-categorize products |
+| `/metafield-normalize <ns.key>` | Normalize dirty metafield values — audit-first, batched, with rollback export |
 | `/alt-text <collection>` | Generate SEO image alt text |
 | `/missing-data-audit` | Audit catalog for missing data |
 | `/section-snapshot <file>` | Snapshot a section's settings before changes |
@@ -240,6 +241,31 @@ If `design/` is empty or missing, flag that visual design direction hasn't been 
 - **`--allow-mutations` is opt-in** — never add it as a default flag. Type it deliberately.
 - **No bulk destructive operations** without explicit confirmation in the conversation.
 - **Log every store-data change** in `docs/session-log.md` (or run `/log-session`).
+- **When context is running low**, suggest: *"We're approaching the context limit. Want me to /log-session now? Then you can /clear and run /recover-context to pick up where we left off."* If the user agrees, invoke `/log-session` immediately, then tell them to type `/clear`. Remind them to run `/recover-context` once the new session loads.
+
+---
+
+## BULK PRODUCT OPS
+
+For stores with large catalogs, bulk mistakes are hard to undo. Follow this pattern without exception.
+
+### The pattern: audit → map → export → batch-apply
+
+1. **Audit first (read-only).** Before any bulk change, query and display what exists. Use `/catalog-triage`, `/missing-data-audit`, or Phase 1 of `/metafield-normalize`. No mutations.
+2. **Propose the mapping.** Document exactly what will change and why. Get explicit confirmation before writing a single mutation.
+3. **Export current state.** Before executing mutations, snapshot the current values to `store-data/exports/` as a CSV. This is your rollback source.
+4. **Batch in groups of 50.** Never mutate more than 50 products per API call. Report progress and stop on any error.
+
+### Hard rules
+
+- **Never run a bulk mutation without a prior export.** If `store-data/exports/` doesn't have a snapshot dated today for the field you're changing, create one first.
+- **Stop on first error.** If a batch returns any `userErrors`, halt and report before continuing.
+- **Max batch size: 50 products.** Applies to all bulk mutations — metafields, tags, collections, descriptions, inventory settings.
+- **Metafield normalization uses `/metafield-normalize`.** It enforces the audit→map→export→apply sequence and won't skip phases without explicit confirmation.
+
+### Rollback
+
+If a bulk op goes wrong, the export CSV in `store-data/exports/` is the source of truth. Use it to construct reverting mutations. Run `/rollback` for a rollback plan.
 
 ---
 

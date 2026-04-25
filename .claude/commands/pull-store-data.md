@@ -90,6 +90,7 @@ Fetch up to 500 products. If the catalog is larger (check `store-data/store-prof
       id handle title vendor productType tags status
       variantsCount { count }
       metafields(first: 5) { nodes { namespace key } }
+      collections(first: 10) { nodes { handle title } }
     }
     pageInfo { hasNextPage endCursor }
   }
@@ -97,7 +98,9 @@ Fetch up to 500 products. If the catalog is larger (check `store-data/store-prof
 ```
 
 Fetch a second page if needed (up to 500 total). Write as CSV:
-`id,handle,title,vendor,product_type,tags,status,variant_count,metafield_keys`
+`id,handle,title,vendor,product_type,tags,status,variant_count,metafield_keys,collections`
+
+The `collections` column is a pipe-separated list of collection handles (e.g. `fly-fishing|waders|sale`). This makes it possible to filter by collection in bulk ops without a separate API call.
 
 For catalogs over 500 products: note the total count and recommend running `/catalog-triage` for bulk operations that need full coverage.
 

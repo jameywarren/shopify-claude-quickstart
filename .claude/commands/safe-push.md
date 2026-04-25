@@ -11,16 +11,26 @@ Before pushing any theme changes to the live theme, run through:
 5. Missing schema translations for any new settings?
 6. Any in-flight metafield/metaobject changes that haven't been applied yet?
 
-Report all issues. If all clear, confirm "ready to push" and output the exact push command for the live theme:
+Report all issues. If all clear, confirm "ready to push" and output the exact push command for the live theme.
+
+**Push ordering — if pushing a section and a template that references it together:**
+
+Push in two steps. Shopify validates template JSON before resolving new section schemas, so pushing both at once can fail with a block-key error even when the files are correct.
 
 ```bash
-shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID
+# Step 1: section Liquid first
+shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID \
+  --only sections/changed.liquid
+
+# Step 2: template JSON after
+shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID \
+  --only templates/changed.json
 ```
 
-To push only changed files (faster, safer):
+For unrelated files (no section/template dependency), a single push is fine:
 ```bash
 shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme LIVE_THEME_ID \
-  --only sections/changed.liquid templates/changed.json
+  --only sections/a.liquid sections/b.liquid
 ```
 
 The `--path store-data/theme` flag is required — omitting it causes "not in a theme directory" errors.
