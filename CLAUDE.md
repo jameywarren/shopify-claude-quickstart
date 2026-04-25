@@ -98,11 +98,12 @@ This project ships with slash commands in `.claude/commands/`. **Use them instea
 | `/add-metafield-to-pdp <ns.key>` | Add a metafield display to the PDP |
 | `/theme-perf-audit` | Audit pulled theme for performance issues |
 
-### Safety & end-of-session
+### Safety, git & end-of-session
 
 ```
 /scope-check [task]                Verify auth scopes cover the task
-/safe-push                         Pre-flight checklist before pushing live
+/safe-push                         Pre-flight checklist before pushing live + auto-commit to git
+/github-setup                      Initialize git, create GitHub repo, push initial commit
 /rollback <when>                   Plan a rollback to a previous state
 /log-session                       Append today's session log entry
 ```

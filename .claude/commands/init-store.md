@@ -117,4 +117,12 @@ Give me a 5-bullet summary:
 4. Catalog: product count, collection count, metafield count
 5. Anything unusual to flag for the build
 
+### Step 6 — Offer GitHub tracking
+
+Ask the user:
+
+> "Want to track this theme in a private GitHub repo? You'll get full version history — so you can always roll back to a previous heading, layout, or setting. I can set it up now."
+
+If they say yes, run `/github-setup`. If they say no, note they can run `/github-setup` at any time.
+
 Do **not** propose any builds yet. The next step is `/brief-interview` (or `/brief-quick`) to capture what we're building.

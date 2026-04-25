@@ -1,5 +1,21 @@
-# Downloaded theme files (large, regenerated via shopify theme pull)
-store-data/theme/
+# Theme binary assets — large files served by Shopify CDN, not worth tracking
+store-data/theme/assets/*.png
+store-data/theme/assets/*.jpg
+store-data/theme/assets/*.jpeg
+store-data/theme/assets/*.gif
+store-data/theme/assets/*.webp
+store-data/theme/assets/*.svg
+store-data/theme/assets/*.ico
+store-data/theme/assets/*.woff
+store-data/theme/assets/*.woff2
+store-data/theme/assets/*.ttf
+store-data/theme/assets/*.eot
+store-data/theme/assets/*.otf
+store-data/theme/assets/*.mp4
+store-data/theme/assets/*.mp3
+store-data/theme/assets/*.zip
+store-data/theme/assets/*.pdf
+# Theme text files (.liquid, .json, .css, .js) ARE tracked — they are the work product
 
 # Store data snapshots (regenerated via /pull-store-data)
 store-data/pages.json

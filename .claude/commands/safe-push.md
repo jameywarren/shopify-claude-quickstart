@@ -36,3 +36,33 @@ shopify theme push --path store-data/theme --store {STORE}.myshopify.com --theme
 The `--path store-data/theme` flag is required — omitting it causes "not in a theme directory" errors.
 
 Do not push yourself — I push.
+
+---
+
+## After the user confirms the push succeeded
+
+Check if this project has a git remote:
+
+```bash
+git remote -v 2>/dev/null
+```
+
+**If a remote exists** — commit the pushed files automatically:
+
+```bash
+git add store-data/theme/
+git status
+```
+
+Show the staged files, then commit with a message derived from what was pushed (use the filenames from the `--only` list):
+
+```bash
+git commit -m "theme: {brief description of what changed}
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+git push
+```
+
+Example messages: `theme: update hero subheading and CTA copy`, `theme: add ski landing page template`, `theme: fix product grid spacing on mobile`.
+
+**If no remote exists** — ask: *"No GitHub repo connected yet. Want to run /github-setup to enable version history?"*
